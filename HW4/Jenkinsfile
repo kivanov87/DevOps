@@ -1,0 +1,72 @@
+pipeline
+{
+    agent any
+
+    stages
+    {
+        stage('Clone the project')
+        {
+            steps
+            {
+                sh '''
+                cd /projects
+                if [ -d /projects/bg-app ]; then
+                  cd /projects/bg-app
+                  sudo git pull https://github.com/kivanov87/bg-app.git
+                else
+                  sudo git clone https://github.com/kivanov87/bg-app.git
+                fi
+                '''
+            }
+        }
+
+        stage('Create a network')
+        {
+            steps
+            {
+                sh '''
+                sudo docker network rm app || true
+                sudo docker network ls | grep app || sudo docker network create app
+                '''
+            }
+        }
+
+        stage('Build the Web Image')
+        {
+            steps
+            {
+                sh 'cd /projects/bg-app && sudo docker image build -t img-web -f Dockerfile.web .'
+            }
+        }
+        
+        stage('Run the Web app')
+        {
+            steps
+            {
+                sh '''
+                sudo docker container rm -f web || true
+                sudo docker container run -d --name web --net app -p 9090:80 -v /projects/bg-app/web:/var/www/html:ro img-web
+                '''
+            }
+        }
+
+                stage('Build the DB Image')
+        {
+            steps
+            {
+                sh 'cd /projects/bg-app && sudo docker image build -t img-db -f Dockerfile.db .'
+            }
+        }
+
+                stage('Run the Database')
+        {
+            steps
+            {
+                sh '''
+                sudo docker container rm -f db || true
+                sudo docker container run -d --name db --net app -e MYSQL_ROOT_PASSWORD=12345 img-db
+                '''
+            }
+        }
+    }
+}
