@@ -1,5 +1,17 @@
-FROM prom/node-exporter:v1.2.2
+FROM centos
+
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+
+RUN yum update -y && \
+    yum install -y curl && \
+    yum clean all && \
+    yum install wget -y
+RUN wget https://github.com/prometheus/node_exporter/releases/download/v1.5.0/node_exporter-1.5.0.linux-amd64.tar.gz && \
+    tar xzvf node_exporter-1.5.0.linux-amd64.tar.gz && \
+    rm node_exporter-1.5.0.linux-amd64.tar.gz
+WORKDIR /node_exporter-1.5.0.linux-amd64/
 
 EXPOSE 9100
 
-CMD ["--path.procfs", "/host/proc", "--path.sysfs", "/host/sys", "--collector.filesystem.ignored-mount-points", "^/(sys|proc|dev|host|etc)($|/)"]
+CMD [ "./node_exporter" ]
