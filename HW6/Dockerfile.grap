@@ -1,0 +1,14 @@
+FROM centos
+
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+
+RUN yum update -y && \
+    yum install -y curl && \
+    yum install grafana && \
+    yum clean all &&
+
+EXPOSE 3000
+
+# Start Grafana service
+CMD /usr/sbin/grafana-server --config=/etc/grafana/grafana.ini --homepath=/usr/share/grafana cfg:default.paths.logs=/var/log/grafana cfg:default.paths.data=/var/lib/grafana cfg:default.paths.plugins=/var/lib/grafana/plugins

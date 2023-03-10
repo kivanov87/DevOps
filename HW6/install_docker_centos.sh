@@ -12,6 +12,9 @@ systemctl enable --now docker
 echo "* Adjust group membership"
 usermod -aG docker vagrant
 
+docker volume create grafana
+
+
 echo "* Adjust the firewall"
 firewall-cmd --add-port 8080/tcp --permanent
 firewall-cmd --add-port 8081/tcp --permanent
