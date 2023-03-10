@@ -5,9 +5,8 @@ RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|
 
 RUN yum update -y && \
     yum install -y curl && \
-    yum install grafana && \
-    yum clean all &&
-
+    yum install -y grafana && \
+    yum clean all
 EXPOSE 3000
 
 # Start Grafana service
