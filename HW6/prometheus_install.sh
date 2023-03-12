@@ -9,7 +9,7 @@ echo -e "\033[0;36mCreate grafana volume\033[0m"
 docker volume create grafana
 echo -e "\033[0;36mCreate application.json\033[0m"
 
-sudo sh -c 'echo "{ \"metrics-addr\" : \"0.0.0.0:8081\", \"experimental\" : true, \"metrics-addr\" : \"0.0.0.0:8082\" }" >> /etc/docker/application.json'
+sudo sh -c 'echo "{ \"metrics-addr\": \"0.0.0.0:8081\", \"experimental\": true, \"metrics-addr\": \"0.0.0.0:8082\", \"role\": \"container\" }" > /etc/docker/application.json'
 
 echo -e "\033[0;36mCreate Prometheus.yaml\033[0m"
 cat << EOF > prometheus-2.42.0.linux-amd64/prometheus.yml
