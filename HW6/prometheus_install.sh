@@ -16,18 +16,20 @@ echo -e "\033[0;36mCreate Prometheus.yaml\033[0m"
 cat << EOF > prometheus-2.42.0.linux-amd64/prometheus.yml
 global:
   scrape_interval: 20s
-
 scrape_configs:
-  - job_name: 'prometheus'
+  - job_name: prometheus
     static_configs:
-    - targets: ['localhost:9090']  
-  - job_name: 'aplications'
+      - targets:
+          - localhost:9090
+  - job_name: aplications
     static_configs:
-    - targets: ['localhost:8081']
-    - targets: ['localhost:8082']
+      - targets:
+          - localhost:8081
+      - targets:
+          - localhost:8082
     file_sd_configs:
-    - files:
-      - 'application.json'
+      - files:
+          - application.json
 EOF
 echo -e "\033[0;36mStart Prometheus\033[0m"
 sudo chmod a+rw /tmp/prometheus.log
