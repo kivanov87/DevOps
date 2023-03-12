@@ -5,7 +5,6 @@ wget https://github.com/prometheus/prometheus/releases/download/v2.42.0/promethe
 
 sudo tar xzvf prometheus-2.42.0.linux-amd64.tar.gz
 
-sudo rm prometheus-2.42.0.linux-amd64.tar.gz
 echo -e "\033[0;36mCreate grafana volume\033[0m"
 docker volume create grafana
 echo -e "\033[0;36mCreate application.json\033[0m"
