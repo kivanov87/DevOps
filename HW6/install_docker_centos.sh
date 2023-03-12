@@ -13,6 +13,7 @@ systemctl enable --now docker
 echo "* Adjust group membership"
 usermod -aG docker vagrant
 
+echo -e "\033[0;36mCreate volume grafana\033[0m"
 docker volume create grafana
 
 
