@@ -14,4 +14,4 @@ COPY dashboard.json /dashboard.json
 
 # Start Grafana service
 CMD /usr/sbin/grafana-server --config=/etc/grafana/grafana.ini --homepath=/usr/share/grafana cfg:default.paths.logs=/var/log/grafana cfg:default.paths.data=/var/lib/grafana cfg:default.paths.plugins=/var/lib/grafana/plugins && \
-    curl -XPOST -H 'Content-Type: application/json' -d '@/dashboard.json' http://localhost:3000/api/dashboards/db
+    curl -XPOST -H 'Content-Type: application/json' -d '@/dashboard.json' http://192.168.99.100:3000/api/dashboards/db
