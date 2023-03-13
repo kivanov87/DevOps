@@ -34,5 +34,3 @@ echo -e "\033[0;36mStart Prometheus\033[0m"
 sudo chmod a+rw /tmp/prometheus.log
 cd prometheus-2.42.0.linux-amd64
 sudo ./prometheus --config.file prometheus.yml --web.enable-lifecycle 2>> /tmp/prometheus.log &
-
-
