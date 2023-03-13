@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Start Docker daemon with metrics enabled
-dockerd --metrics-addr="localhost:9323" &
+dockerd --metrics-addr="192.168.99.100:9090" &
 
 # Wait for Docker daemon to start up
 sleep 5
@@ -14,7 +14,7 @@ global:
 scrape_configs:
 - job_name: 'docker'
   static_configs:
-  - targets: ['localhost:9323']
+  - targets: ['192.168.99.100:9090']
   metric_relabel_configs:
   - source_labels: [instance]
     target_label: instance_name
@@ -22,7 +22,7 @@ scrape_configs:
     regex: '(.*):.*'
 - job_name: 'goprom'
   static_configs:
-  - targets: ['localhost:8081', 'localhost:8082']
+  - targets: ['192.168.99.100:8081', '192.168.99.100:8082']
 EOF
 
 # Restart Prometheus to pick up new configuration
@@ -57,7 +57,7 @@ curl -XPOST -H 'Content-Type: application/json' -d '{
     ]
   },
   "overwrite": true
-}' http://localhost:3000/api/dashboards/db
+}' http://192.168.99.100:3000/api/dashboards/db
 
 # Print out Grafana dashboard URL
-echo "Grafana dashboard URL: http://localhost:3000/d/Gp6B_iwMk/docker-metrics"
+echo "Grafana dashboard URL: http://192.168.99.100:3000/d/Gp6B_iwMk/docker-metrics"

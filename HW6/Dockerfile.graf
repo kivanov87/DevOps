@@ -7,7 +7,11 @@ RUN yum update -y && \
     yum install -y curl && \
     yum install -y grafana && \
     yum clean all
+
 EXPOSE 3000
 
+COPY dashboard.json /dashboard.json
+
 # Start Grafana service
-CMD /usr/sbin/grafana-server --config=/etc/grafana/grafana.ini --homepath=/usr/share/grafana cfg:default.paths.logs=/var/log/grafana cfg:default.paths.data=/var/lib/grafana cfg:default.paths.plugins=/var/lib/grafana/plugins
+CMD /usr/sbin/grafana-server --config=/etc/grafana/grafana.ini --homepath=/usr/share/grafana cfg:default.paths.logs=/var/log/grafana cfg:default.paths.data=/var/lib/grafana cfg:default.paths.plugins=/var/lib/grafana/plugins && \
+    curl -XPOST -H 'Content-Type: application/json' -d '@/dashboard.json' http://localhost:3000/api/dashboards/db
