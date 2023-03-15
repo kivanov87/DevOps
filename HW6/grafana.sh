@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo -e "\033[0;36mDocker Swarm Init\033[0m"
-docker swarm init --advertise-addr 192.168.99.101
+docker swarm init --advertise-addr 192.168.99.100
 
 echo -e "\033[0;36mAdd Vagrant user to Wheel Group\033[0m"
 usermod -aG wheel vagrant
