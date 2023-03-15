@@ -1,21 +1,28 @@
 #!/bin/bash
 
-# Set variables for Grafana URL and admin credentials
-GRAFANA_URL="http://192.168.99.100:3000"
-GRAFANA_ADMIN_USER="admin"
-GRAFANA_ADMIN_PASSWORD="admin"
+echo -e "\033[0;36mDocker Swarm Init\033[0m"
+docker swarm init --advertise-addr 192.168.99.101
 
-# Set variables for the new user credentials
-NEW_USER_NAME="Enzo "
-NEW_USER_EMAIL="kalin.at.ivanov@gmail.com"
-NEW_USER_PASSWORD="Aecfl9e3wq"
+echo -e "\033[0;36mAdd Vagrant user to Wheel Group\033[0m"
+usermod -aG wheel vagrant
 
-# Authenticate as admin user and get an authentication token
-GRAFANA_TOKEN=$(curl -s -H "Content-Type: application/json" -X POST \
-  -d '{"user":"'$GRAFANA_ADMIN_USER'","email":"","password":"'$GRAFANA_ADMIN_PASSWORD'"}' \
-  "$GRAFANA_URL/api/auth/login" | jq -r '.user.token')
+echo -e "\033[0;36mCopying daemon.json to /etc/docker/\033[0m"
+sudo cp /vagrant/daemon.json /etc/docker/daemon.json
 
-# Create or update the new user account using the authentication token
-curl -s -H "Authorization: Bearer $GRAFANA_TOKEN" -H "Content-Type: application/json" -X POST \
-  -d '{"name":"'$NEW_USER_NAME'","email":"'$NEW_USER_EMAIL'","login":"'$NEW_USER_NAME'","password":"'$NEW_USER_PASSWORD'","role":"Viewer"}' \
-  "$GRAFANA_URL/api/admin/users"
+echo -e "\033[0;36mRestarting docker to detect changes in daemon.json\033[0m"
+sudo systemctl daemon-reload
+sudo systemctl restart docker 
+
+echo -e "\033[0;36mStarting Grafana 8.2.0 as container on port 3000\033[0m"
+docker run -d -p 3000:3000 --name grafana grafana/grafana-oss:8.2.0
+
+echo -e "\033[0;36mCopying prometheus.yml to /tmp/\033[0m"
+sudo cp /vagrant/prometheus.yml /tmp/prometheus.yml
+
+echo -e "\033[0;36mStarting Prometheus as a Service in the Swarm\033[0m"
+cd /vagrant
+docker compose up -d
+
+echo -e "\033[0;36mStarting 2 containers from goprom image\033[0m"
+docker container run -d --name worker1 -p 8081:8080 shekeriev/goprom
+docker container run -d --name worker2 -p 8082:8080 shekeriev/goprom

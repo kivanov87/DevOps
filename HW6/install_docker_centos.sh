@@ -1,27 +1,27 @@
 #!/bin/bash
 
-echo "* Add Docker repository"
+echo -e "[0;36mAdd Docker repository\033[0m"
 dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 
-echo "* Install Docker"
+echo -e "\033[0;36mInstall Docker\033[0m"
 dnf install -y docker-ce docker-ce-cli containerd.io
 dnf install -y git
 
-echo "* Start Docker service"
+echo -e "\033[0;36mStart Docker service\033[0m"
 systemctl enable --now docker
 
-echo "* Adjust group membership"
+echo -e "\033[0;36mAdjust group membership\033[0m"
 usermod -aG docker vagrant
 
 echo -e "\033[0;36mCreate volume grafana\033[0m"
 docker volume create grafana
 
+echo -e "\033[0;36mAdd Vagrant user to Wheel Group\033[0m"
+usermod -aG wheel vagrant
 
-echo "* Adjust the firewall"
-firewall-cmd --add-port 8080/tcp --permanent
+echo -e "\033[0;36mAdjust the firewall\033[0m"
 firewall-cmd --add-port 8081/tcp --permanent
 firewall-cmd --add-port 8082/tcp --permanent
 firewall-cmd --add-port 9090/tcp --permanent
 firewall-cmd --add-port 3000/tcp --permanent
-firewall-cmd --add-port 9100/tcp --permanent
 firewall-cmd --reload

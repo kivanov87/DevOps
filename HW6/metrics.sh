@@ -3,26 +3,26 @@
 # Start Docker daemon with metrics enabled
 dockerd --metrics-addr="192.168.99.100:9090" &
 
-# Wait for Docker daemon to start up
+#wait
 sleep 5
 
-# Add Docker job configuration to Prometheus
+#Docker configuration to Prometheus
 cat << EOF > /etc/prometheus/prometheus.yml
 global:
-  scrape_interval: 15s
-
+  scrape_interval:     15s 
+  evaluation_interval: 15s 
+  external_labels:
+      monitor: 'ADDR'
+rule_files:
 scrape_configs:
-- job_name: 'docker'
-  static_configs:
-  - targets: ['192.168.99.100:9090']
-  metric_relabel_configs:
-  - source_labels: [instance]
-    target_label: instance_name
-    replacement: '$1'
-    regex: '(.*):.*'
-- job_name: 'goprom'
-  static_configs:
-  - targets: ['192.168.99.100:8081', '192.168.99.100:8082']
+  - job_name: 'dockerProm'
+    static_configs:
+      - targets: ['192.168.99.101:9090']
+      - targets: ['192.168.99.101:9525']
+  - job_name: 'goprom'
+    static_configs:
+      - targets: ['192.168.99.101:8081']
+      - targets: ['192.168.99.101:8082']
 EOF
 
 # Restart Prometheus to pick up new configuration

@@ -9,13 +9,13 @@ Vagrant.configure(2) do |config|
         node.vm.box="shekeriev/centos-stream-9"
         node.vm.hostname = "node.do1.lab"
         node.vm.provider :virtualbox do |vb|
-          vb.customize ["modifyvm", :id, "--memory", "5000", "--cpus", "2"]
+          vb.customize ["modifyvm", :id, "--memory", "3000", "--cpus", "2"]
         end
         node.vm.network "private_network", ip: "192.168.99.100"
         node.vm.provision "shell", path: "add_hosts.sh"
         node.vm.provision "shell", path: "install_docker_centos.sh"
-        node.vm.provision "shell", path: "git_install.sh"
-        node.vm.provision "shell", path: "prometheus_install.sh"        
+        node.vm.provision "shell", path: "prometheus_install.sh"
+        node.vm.provision "shell", path: "grafana.sh"       
       end
     
     end
