@@ -6,7 +6,7 @@ sudo rpm -Uvh elasticsearch-*.rpm
 
 echo "* Copying Elasticsearch Config Files"
 sudo cp /vagrant/elasticsearch.yml /etc/elasticsearch/elasticsearch.yml
-sudo cp /vagrant/jvm.options /etc/elasticsearch/jvm.options.d/jvm.options
+sudo cp /vagrant/jvm.elastic /etc/elasticsearch/jvm.options.d/jvm.options
 
 echo "* reboot services"
 sudo systemctl daemon-reload
@@ -26,3 +26,9 @@ echo "* Install Logstash"
 wget https://artifacts.elastic.co/downloads/kibana/kibana-8.6.2-x86_64.rpm
 sudo rpm -Uvh kibana-*.rpm
 
+
+mkdir /vagrant/logs
+
+vagrant scp vagrant.log default:/vagrant/logs/
+
+egrep 'The\ generated\ password.*' vagrant.log | awk '{print $NF}'
