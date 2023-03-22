@@ -10,7 +10,7 @@ Vagrant.configure("2") do |config|
     server.vm.network "private_network", ip: "192.168.99.100"
     server.vm.synced_folder ".", "/vagrant"
     server.vm.provision "shell", path: "add-hosts.sh"
-    server.vm.provision "shell", path: "add-docker.sh"
+    server.vm.provision "shell", path: "firewall.sh"
     server.vm.provision "shell", path: "ELK-install.sh"
     server.vm.provider "virtualbox" do |v|
       v.gui = false
@@ -19,27 +19,29 @@ Vagrant.configure("2") do |config|
     end
   end
   
-#  config.vm.define "node1" do |node1|
-#    node1.vm.box = "shekeriev/centos-stream-9"
-#    node1.vm.hostname = "node1"
-#    node1.vm.network "private_network", ip: "192.168.99.101"
-#    node1.vm.provision "shell", path: "add-hosts.sh"
-#    node1.vm.provider "virtualbox" do |v|
-#      v.gui = false
-#      v.memory = 1024
-#      v.cpus = 2
-#    end
-#  end
+  config.vm.define "node1" do |node1|
+    node1.vm.box = "shekeriev/centos-stream-9"
+    node1.vm.hostname = "node1"
+    node1.vm.network "private_network", ip: "192.168.99.101"
+    node1.vm.provision "shell", path: "add-hosts.sh"
+    node1.vm.provision "shell", path: "metric_cent.sh"
+    node1.vm.provider "virtualbox" do |v|
+      v.gui = false
+      v.memory = 1024
+      v.cpus = 2
+    end
+  end
   
-#  config.vm.define "node2" do |node2|
-#    node2.vm.box = "ubuntu/bionic64"
-#    node2.vm.hostname = "node2"
-#    node2.vm.network "private_network", ip: "192.168.99.102"
-#    node2.vm.provision "shell", path: "add-hosts.sh"
-#    node2.vm.provider "virtualbox" do |v|
-#      v.gui = false
-#      v.memory = 1024
-#      v.cpus = 2
-#    end
-#  end
+  config.vm.define "node2" do |node2|
+    node2.vm.box = "ubuntu/bionic64"
+    node2.vm.hostname = "node2"
+    node2.vm.network "private_network", ip: "192.168.99.102"
+    node2.vm.provision "shell", path: "add-hosts.sh"
+    node2.vm.provision "shell", path: "metric_ubuntu.sh"
+    node2.vm.provider "virtualbox" do |v|
+      v.gui = false
+      v.memory = 1024
+      v.cpus = 2
+    end
+  end
 end
