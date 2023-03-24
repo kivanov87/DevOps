@@ -1,31 +1,24 @@
 #!/bin/bash
+echo -e "\033[0;36Add Docker repository\033[0m"
+dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 
-echo "* Add required packages"
-dnf update
-pt-geta install -y ca-certificates curl gnupg lsb-release
+echo -e "\033[0;36mInstall Docker\033[0m"
+dnf install -y docker-ce docker-ce-cli containerd.io git 
 
-echo "* Add repository key"
-curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo -e "\033[0;36mStart Docker service\033[0m"
+systemctl enable --now docker
 
-echo "* Add the Docker repository"
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+echo -e "\033[0;36mAdjust group membership\033[0m"
+usermod -aG docker vagrant
+usermod -aG wheel vagrant
 
 echo "* Install the packages (Java, git, Docker)"
 dnf update
-dnf install -y fontconfig openjdk-17-jre git docker-ce docker-ce-cli containerd.io
+dnf install -y fontconfig openjdk-17-jre 
+dnf -y install git
 
 echo "* Adjust the group membership"
 usermod -aG docker vagrant
-
-echo "* Install Docker Compose (for vagrant user)"
-mkdir -p /home/vagrant/.docker/cli-plugins
-curl -SL https://github.com/docker/compose/releases/download/v2.12.2/docker-compose-linux-x86_64 -o /home/vagrant/.docker/cli-plugins/docker-compose
-chmod +x /home/vagrant/.docker/cli-plugins/docker-compose
-chown -R vagrant:vagrant /home/vagrant/.docker
-
-echo "* Copy the Compose plugin for root user"
-mkdir -p /root/.docker/cli-plugins
-cp /home/vagrant/.docker/cli-plugins/docker-compose /root/.docker/cli-plugins/
 
 echo "* Download Jenkins CLI"
 wget http://192.168.99.100:8080/jnlpJars/jenkins-cli.jar

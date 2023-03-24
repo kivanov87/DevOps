@@ -27,7 +27,7 @@ git clone https://github.com/shekeriev/dob-2021-04-exam-re  /tmp/dob-2021-04-exa
 
 
 # Add a Webhook
-curl -X 'POST' 'http://192.168.99.102:3000/api/v1/repos/vagrant/dob-2021-04-exam-re/hooks' \
+curl -X 'POST' 'http://192.168.99.101:3000/api/v1/repos/vagrant/dob-2021-04-exam-re/hooks' \
   -H 'accept: application/json' \
   -H 'authorization: Basic '$(echo -n 'vagrant:vagrant' | base64) \
   -H 'Content-Type: application/json' \
