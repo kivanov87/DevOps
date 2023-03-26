@@ -1,0 +1,17 @@
+c06e4d7cd94c411e8c27302a164f0c0a
+
+jenkins:cred  
+vagrant :vagrant
+
+jenkins user :jenkins: jenkinss
+
+jenkins
+ACCESS PERMISSIONS
+Read, Write, Delete
+To use the access token from your Docker CLI client:
+
+1. Run docker login -u ivanovka87
+
+2. At the password prompt, enter the personal access token.
+
+dckr_pat_DbqvkHos9Vu8QGLtCTxL70_xJ0M   

@@ -1,0 +1,67 @@
+pipeline
+{
+    agent
+    {
+        label 'docker-node'
+    }
+    environment
+    {
+        DOCKERHUB_CREDENTIALS=credentials('docker-hubb')
+    }
+    stages
+    {
+        stage('Clone')
+        {
+            steps
+            {
+                git branch: 'main', url: 'http://192.168.111.101:3000/vagrant/exam'
+            }  
+        }
+        stage('Create a network')
+        {
+            steps
+            {
+                sh '''
+                docker network rm exam-net || true
+                docker network ls | grep exam-net || docker network create exam-net
+                '''
+            }
+        }
+        stage('Build the Images')
+        {
+            steps
+            {
+                sh 'cd /home/vagrant/workspace/exam/exam/client && docker image build -t  img-client .'
+                sh 'cd /home/vagrant/workspace/exam/exam/generator && docker image build -t img-generator .'
+                sh 'cd /home/vagrant/workspace/exam/exam/storage && docker image build -t img-storage .'                
+                
+            }
+        }
+        stage('Run the Containers')
+        {
+            steps
+            {
+                sh 'docker container rm -f dob-client || true'
+                sh 'docker container run -d --name Co1 --net exam-net -p 8080:5000 img-client'
+                sh 'docker container rm -f img-storage || true'
+                sh 'docker container run -d --name Co2 --net exam-net -e MYSQL_ROOT_PASSWORD='ExamPa$$w0rd' img-storage'
+                sh 'docker container rm -f img-generator || true'
+                sh 'docker container run -d --name Co3 --net exam-net img-generator'
+            }
+        }
+        stage('CleanUp')
+        {
+            steps
+            {
+                sh 'docker container rm -f pipeline-exam-producer-1 pipeline-exam-storage-1 pipeline-exam-consumer-1 || true'
+            }
+        }
+        stage('Login')
+        {
+            steps
+            {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            }
+        }
+    }
+}
