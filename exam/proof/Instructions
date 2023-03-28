@@ -1,30 +1,30 @@
-"vagrant up jenkins"   
-that command will build jenkins machine,gitea plugin, ssh pugin and node exporter for prometheus with help of three scripts in provision_scripts folder "jenkins_install.sh","add-hosts.sh","node-exporter"
+#"vagrant up jenkins"   
+#that command will build jenkins machine,gitea plugin, ssh pugin and node exporter for prometheus with help of three scripts in provision_scripts folder "jenkins_install.sh","add-hosts.sh","node-exporter"
 
-"vagrant up docker" with help of four scripts will: add hostnames, will install docker, java, git,node exporter - add and configure jenkins user credentials and firewall - install and run :gitea, create user "vagrant" for gitea, copy exam repos from github, and name our repo to "exam "
+#"vagrant up docker" with help of four scripts will: add hostnames, will install docker, java, git,node exporter - add and configure jenkins user credentials and firewall - install and run :gitea, create user "vagrant" for gitea, copy exam repos from github, and name our repo to "exam "
 
-"vagrant up monitoring " will start docker machine with prometheus and grafana containers
+#"vagrant up monitoring " will start docker machine with prometheus and grafana containers
 
-so we start with 
-vagrant up jenkins
-copy temp password from console got to web ui isntall default plugins
+#so we start with 
+# vagrant up jenkins
+#copy temp password from console got to web ui isntall default plugins
 
-we can now start docker machine
-vagrant up docker
+#we can now start docker machine
+#vagrant up docker
 
-back to jenkins machine
-after start create jenkins password
-sudo passwd jenkins
+#back to jenkins machine
+#after start create jenkins password
+#sudo passwd jenkins
 
-su jenkins
+#su jenkins
 
-ssh vagrant@containers.do1.ex
+#ssh vagrant@containers.do1.ex
 
-copy temp password from console got to web ui isntall default plugins
+#copy temp password from console got to web ui isntall default plugins
 
 
-we can now start docker machine
-vagrant up docker
+#we can now start docker machine
+#vagrant up docker
 
 on jenkins machine
 add first credentials for vagrant user and dockerhub

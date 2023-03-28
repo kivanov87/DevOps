@@ -34,7 +34,4 @@ echo "* Create Docker Hub credentials"
 /vagrant/jenkins/add-jenkins-credentials.sh docker-hub $CRED_NAME $CRED_PASS
 
 echo "* Add slave node"
-/vagrant/jenkins/add-jenkins-slave.sh docker.do1.lab vagrant
-
-echo "* Add the homework job"
-/vagrant/jenkins/add-jenkins-job.sh
+/vagrant/jenkins/add-jenkins-slave.sh containers.do1.exam vagrant

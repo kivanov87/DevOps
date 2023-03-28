@@ -13,7 +13,7 @@ cat <<EOF | java -jar /home/vagrant/jenkins-cli.jar -s http://192.168.99.101:808
 <scope>GLOBAL</scope>
   <id>${CRED_ID}</id>
   <description>${CRED_NAME} username and password pair</description>
-  <username>${CRED_NAME}</username>
-  <password>${CRED_PASS}</password>                                                                                                             
+  <username>${CRED_NAME} vagrant
+  <password>${CRED_PASS} vagrant                                                                                                             
 </com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl>
 EOF

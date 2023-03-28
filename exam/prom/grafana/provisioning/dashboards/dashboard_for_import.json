@@ -157,7 +157,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "node_memory_MemFree_bytes{job=~\"jenskins|docker\"}",
+            "expr": "node_memory_MemFree_bytes{job=~\"jenkins|docker\"}",
             "instant": false,
             "interval": "",
             "legendFormat": "",
@@ -240,7 +240,7 @@
         "targets": [
           {
             "exemplar": true,
-            "expr": "node_memory_Percpu_bytes{job=~\"jenskins|docker\"}",
+            "expr": "node_memory_Percpu_bytes{job=~\"jenkins|docker\"}",
             "interval": "",
             "legendFormat": "",
             "refId": "A"
