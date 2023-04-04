@@ -12,6 +12,6 @@ scrape_configs:
       - targets: ['192.168.111.100:9100']
 
   - job_name: 'docker'
-    static_configs:
+    static_configs: 
       - targets: ['192.168.111.101:9100']
-      - targets: ['192.168.111.101:9323']      
+      - targets: ['192.168.111.101:9323']

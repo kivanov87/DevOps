@@ -1,0 +1,24 @@
+services:
+    generator:
+        image: ivanovka87/Co1
+        container_name: Co1
+        networks:
+            - exam-net
+    storage:
+        image: ivanovka87/Co2
+        container_name: Co2
+        networks:
+            - exam-net
+        environment:
+            MYSQL_ROOT_PASSWORD: "ExamPa$$w0rd"
+    client:
+        image: ivanovka87/Co3
+        container_name: con-client
+        ports:
+            - 80:5000
+        networks:
+            - exam-net
+networks:
+    exam-net:
+        external: true
+        name: exam-net

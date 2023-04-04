@@ -14,7 +14,7 @@ pipeline
         {
             steps
             {
-                git branch: 'main', url: 'http://192.168.111.101:3000/exam/exam'
+                git branch: 'main', url: 'http://192.168.111.101:3000/vagrant/exam'
             }  
         }
         stage('Create a network')
@@ -31,19 +31,19 @@ pipeline
         {
             steps
             {
-                sh 'docker image rm -f exam-generator exam-storage exam-client || true'
-                sh 'docker compose -f docker-compose-run.yml build'
+                sh 'docker image rm -f Co1 Co2 Co3 || true'
+                sh 'docker compose -f docker-compose-run.yml build'                               
             }
         }
         stage('Run the Containers')
         {
             steps
             {
-                sh 'docker container rm -f con-generator con-storage con-client || true'
+                sh 'docker container rm -f Co1 Co2 Co3 || true'
                 sh 'docker compose -f docker-compose-run.yml up -d'
             }
         }
-        stage('Test')
+                stage('Test')
         {
             steps
             {
@@ -61,7 +61,7 @@ pipeline
         {
             steps
             {
-                sh 'docker compose -f docker-compose-run.yml down'
+                sh 'docker container rm -f pipeline-exam-producer-1 pipeline-Co2-1 pipeline-exam-consumer-1 || true'
             }
         }
         stage('Login')
@@ -70,27 +70,27 @@ pipeline
             {
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
             }
-        }
+        }            
         stage('Push')
         {
             steps
             {
-                sh 'docker image rm ilkothetiger/exam-generator ilkothetiger/exam-storage ilkothetiger/exam-client || true'
-                sh 'docker image tag exam-generator ilkothetiger/exam-generator'
-                sh 'docker image tag exam-storage ilkothetiger/exam-storage'
-                sh 'docker image tag exam-client ilkothetiger/exam-client'
-                sh 'docker push ilkothetiger/exam-generator'
-                sh 'docker push ilkothetiger/exam-storage'
-                sh 'docker push ilkothetiger/exam-client'
+                sh 'docker image rm ivanovka87/Co1 ivanovka87/Co2 ivanovka87/Co3 || true'
+                sh 'docker image tag Co1 ivanovka87/Co1'
+                sh 'docker image tag Co2 ivanovka87/Co2'
+                sh 'docker image tag Co3 ivanovka87/Co3'
+                sh 'docker push ivanovka87/Co1'
+                sh 'docker push ivanovka87/Co2'
+                sh 'docker push ivanovka87/Co3'
             }
         }
         stage('Deploy')
         {
             steps
             {
-                sh 'docker image rm -f exam-generator-1 exam-storage-1 exam-client-1 || true'
+                sh 'docker image rm -f Co1-1 Co2-1 Co3-1 || true'
                 sh 'docker compose -f docker-compose-deploy.yml up -d'
             }
-        }
+        }    
     }
 }
