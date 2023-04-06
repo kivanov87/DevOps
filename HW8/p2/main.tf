@@ -32,7 +32,7 @@ external = "80"
 }
 
 resource "docker_container" "con-db" {
-name = "site"
+name = "DB"
 image = docker_image.img-web.image_id
 ports {
 internal = "8080"
