@@ -1,8 +1,0 @@
-git:latest
-github:latest
-gitea:latest
-ssh:latest
-ssh-slaves:latest
-workflow-multibranch:latest
-workflow-aggregator:latest
-ws-cleanup:latest
