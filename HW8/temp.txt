@@ -1,0 +1,25 @@
+resource "docker_image" "img-web" {
+  name = "shekeriev/bgapp-web:latest"
+}
+
+resource "docker_container" "container-web" {
+  name  = "bgapp-web"
+  image = docker_image.img-web.latest
+  ports {
+    internal = 8080
+    external = 80
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /usr/local/bin/myscript.sh",
+      "/usr/local/bin/myscript.sh"
+    ]
+    connection {
+      type     = "ssh"
+      user     = "ubuntu"
+      password = "${var.remote_password}"
+      host     = "${var.remote_host}"
+    }
+  }
+}
