@@ -13,3 +13,7 @@ provider "docker" {
 resource "docker_image" "img-web" {
   name = var.v_image
 }
+
+resource "docker_image" "img-db" {
+  name = var.v_image_db
+}

@@ -1,19 +1,31 @@
 v_image = {
-    dev = "shekeriev/terraform-docker:dev"
-    prod = "shekeriev/terraform-docker:prod"
+    dev = "shekeriev/bgapp-web"
+}
+
+v_image_db = {
+    web = "shekeriev/bgapp-db"
 }
 
 v_con_name = {
-    dev = "site-dev"
-    prod = "site-prod"
+    dev = "web"
+}
+
+v_con_name_db = {
+    dev = "db"
 }
 
 v_int_port = {
-    dev = 80
     prod = 80
 }
 
 v_ext_port = {
-    dev = 8080
     prod = 80
+}
+
+v_int_port_db = {
+    dev = 3306
+}
+
+v_ext_port_db = {
+    dev = 3306
 }

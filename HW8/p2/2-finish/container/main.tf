@@ -18,3 +18,12 @@ resource "docker_container" "con-web" {
     external = var.v_ext_port
   }
 }
+
+resource "docker_container" "con-db" {
+  name = var.v_con_name_db
+  image = var.v_image_db
+  ports {
+    internal = var.v_int_port_db 
+    external = var.v_ext_port_db
+  }
+}

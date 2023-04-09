@@ -10,15 +10,43 @@ provider "docker" {
   host = "tcp://192.168.99.100:2375/"
 }
 
-module "image" {
-  source = "./image" 
-  v_image = lookup(var.v_image, var.mode)
+resource "docker_network" "app" {
+  name = "app"
 }
 
-module "container" {
-  source = "./container"
-  v_image = module.image.image_out
-  v_con_name = lookup(var.v_con_name, var.mode)
-  v_int_port = lookup(var.v_int_port, var.mode)
-  v_ext_port = lookup(var.v_ext_port, var.mode)
+resource "docker_image" "img-web" {
+  name = "shekeriev/bgapp-web"
+}
+
+resource "docker_image" "img-db" {
+  name = "shekeriev/bgapp-db"
+}
+
+resource "docker_container" "db" {
+  name  = "bgapp-db"
+  image = "docker_image.img-db"
+  networks_advanced {
+    name = docker_network.app.name
+    aliases = ["db"]
+  }
+}
+
+resource "docker_container" "web" {
+  name  = "bgapp-web"
+  image = "docker_image.img-web"
+  ports {
+    internal = 80
+    external = 8080
+  }
+  networks_advanced {
+    name = docker_network.app.name
+    aliases = ["web"]
+  }
+  depends_on = [docker_container.db]
+
+  command = [
+    "/bin/sh",
+    "-c",
+    "chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html && apache2-foreground"
+  ]
 }
