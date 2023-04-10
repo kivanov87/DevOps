@@ -1,31 +1,31 @@
 v_image = {
-    dev = "shekeriev/bgapp-web"
+    default = "shekeriev/bgapp-web"
 }
 
 v_image_db = {
-    web = "shekeriev/bgapp-db"
+    default = "shekeriev/bgapp-db"
 }
 
 v_con_name = {
-    dev = "web"
+    default = "web"
 }
 
 v_con_name_db = {
-    dev = "db"
+    default = "db"
 }
 
 v_int_port = {
-    prod = 80
+    default = 80
 }
 
-v_ext_port = {
-    prod = 80
+v_ext_port = {   
+    default = 80
 }
 
 v_int_port_db = {
-    dev = 3306
+    default = 3306
 }
 
 v_ext_port_db = {
-    dev = 3306
+    default = 3306
 }
