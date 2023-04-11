@@ -31,4 +31,3 @@ resource "docker_container" "con-db" {
     external = var.v_ext_port_db
   }
 }
-

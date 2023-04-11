@@ -15,9 +15,9 @@ resource "docker_network" "private_network" {
 }
 
 resource "docker_image" "img-web" {
-  name = var.v_image
+  name = "var.v_image"
 }
 
 resource "docker_image" "img-db" {
-  name = var.v_image_db
+  name = "var.v_image_db"
 }
