@@ -15,7 +15,7 @@ resource "docker_network" "private_network" {
 }
 
 resource "docker_container" "con-web" {
-  name = var.v_con_name
+  name = "var.v_con_name"
   image = var.v_image 
   ports {
     internal = var.v_int_port 
@@ -24,8 +24,8 @@ resource "docker_container" "con-web" {
 }
 
 resource "docker_container" "con-db" {
-  name = var.v_con_name_db
-  image = var.v_image_db
+  name = "var.v_con_name_db"
+  image = "var.v_image_db"
   ports {
     internal = var.v_int_port_db 
     external = var.v_ext_port_db

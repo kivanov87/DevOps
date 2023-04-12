@@ -14,10 +14,10 @@ resource "docker_network" "private_network" {
   name = "app"
 }
 
-resource "docker_image" "img-web" {
-  name = "var.v_image"
+resource "docker_image" "WEB" {
+  name = var.v_image
 }
 
-resource "docker_image" "img-db" {
-  name = "var.v_image_db"
+resource "docker_image" "DB" {
+  name = var.v_image_db
 }

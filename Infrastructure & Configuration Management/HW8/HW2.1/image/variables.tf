@@ -3,17 +3,11 @@ variable "mode" {
 }
 
 variable "v_image" { 
-  type = map
-  description = "Image" 
-    default = {
-    mode = "shekeriev/bgapp-web"
-  }
-}  
-
+  description = "WEB" 
+    default = "shekeriev/bgapp-web"
+}
+  
 variable "v_image_db" { 
-  type = map
-  description = "Image"
-  default = {
-    mode = "shekeriev/bgapp-db"
- }
+  description = "DB"
+  default = "shekeriev/bgapp-db"
 } 
