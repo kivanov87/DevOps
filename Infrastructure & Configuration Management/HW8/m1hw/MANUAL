@@ -1,0 +1,3 @@
+"vagrant up" will install debian vm with Docker,Git and it will clone https://github.com/shekeriev/bgapp
+
+"terraform apply" will start container on the machine 
