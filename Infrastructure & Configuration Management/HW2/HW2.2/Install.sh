@@ -7,9 +7,9 @@ ansible-galaxy collection install -p /usr/share/ansible/collections ansible.posi
 ansible-galaxy collection install community.docker
 
 echo *COPY INVENTORY AND CFG FILES*
-cp /vagrant/HW2.1/inventory .
-cp /vagrant/HW2.1/ansible.cfg .
-cp /vagrant/HW2.1/playbook.yml .
+cp /vagrant/files/inventory .
+cp /vagrant/files/ansible.cfg .
+cp /vagrant/files/playbook.yml .
 
 echo *Start playbook*
 ansible-playbook playbook.yml

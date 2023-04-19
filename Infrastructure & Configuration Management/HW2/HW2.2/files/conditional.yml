@@ -1,0 +1,16 @@
+---
+- hosts: children
+become: true
+tasks:
+- name: Ask for the hostname on Red Hat machines
+shell: hostname
+register: rslt
+when: ansible_os_family == "RedHat"
+- name: Show the result on RedHat
+debug: var=rslt
+- name: Ask for the free memory on Debian machines
+shell: free -m
+register: rslt
+when: ansible_os_family == "Debian"
+- name: Show the result on Debian
+debug: var=rslt
