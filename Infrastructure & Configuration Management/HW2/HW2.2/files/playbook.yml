@@ -1,26 +1,51 @@
 ---
-- hosts: webservers
- become: true
- tasks:
- - name: Install Apache HTTP Server
- dnf: name=httpd state=present
-
- - name: Start Apache HTTP Server and Enable it
- service: name=httpd state=started enabled=true
- - name: Allow HTTP service in the firewall
- firewalld: service=http state=enabled permanent=yes immediate=yes
-
-- hosts: dbservers
- become: true
- tasks:
- - name: Install MariaDB Server
- apt: name=mariadb,mariadb-server state=present
- - name: Start and enable MariaDB
- service: name=mariadb state=started enabled=true
-
- ---
-- hosts: webservers
- become: true
- tasks:
- - name: Copy new web files
- copy: src=/vagrant/web/ dest=/var/www/html/
+- hosts: webserver
+  become: true
+  tasks:
+  - name: Install PHP packages
+    package:
+      name:
+        - php
+        - php-common
+        - php-cli
+      state: present
+  - name: “Install EPEL repository”
+    package:
+       name: epel-release
+       state: present
+  - name: “Copy Files”
+    copy:
+       dest: /var/www/html/
+       src: /vagrant/web/
+       directory_mode: true
+    notify: “web_restart”
+  - name: “Starting Web Server”
+    service:
+       name: nginx
+       state: started       
+  handlers:
+  - name: “web_restart”
+    service:
+       name: nginx
+       state: restarted
+  - name: Start Nginx service
+    service:
+        name: nginx
+        state: started
+        enabled: yes
+- hosts: dbserver
+  become: true
+  tasks:
+  - name: “Install MariaDB Server”
+    apt:
+      name: mariadb-server
+      state: present
+  - name: "Copy Database setup"
+    copy:
+       dest: /var/lib/mysql
+       src: /vagrant/db/
+  - name: “Starting Web Server”
+    service:
+       name: mariadb
+       enabled: true
+       state: started      

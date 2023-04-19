@@ -10,12 +10,13 @@
       firewalld: service=http state=enabled permanent=yes immediate=yes
 - hosts: webserver
   become: true
-  remote_user: vagrant
   tasks:
     - name: Copy new web files
       copy:
-        src: /vagrant/web/
-        dest: /var/www/html/
+      src: /vagrant/web/
+      dest: /var/www/html/
+      remote_src: true
+      recurse: true
 - hosts: dbserver
   become: true
   tasks:
