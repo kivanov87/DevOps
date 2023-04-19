@@ -4,7 +4,9 @@ echo *INSTALL ANSIBLE CORE *
 dnf install ansible-core -y
 echo *INSTALL ANSIBLE-GALAXY *
 ansible-galaxy collection install -p /usr/share/ansible/collections ansible.posix
-ansible-galaxy collection install community.docker
+
+echo *Create directory*
+mkdirexit
 
 echo *COPY INVENTORY AND CFG FILES*
 cp /vagrant/files/inventory .
