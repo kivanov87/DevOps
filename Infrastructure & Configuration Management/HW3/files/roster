@@ -1,0 +1,15 @@
+docker:
+ host: 192.168.99.101
+ user: vagrant
+ passwd: vagrant
+ sudo: True
+web:
+ host: 192.168.99.102
+ user: vagrant
+ passwd: vagrant
+ sudo: True
+db:
+ host: 192.168.99.103
+ user: vagrant
+ passwd: vagrant
+ sudo: True
