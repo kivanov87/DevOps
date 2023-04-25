@@ -1,0 +1,37 @@
+---
+- hosts: all
+
+  tasks:
+    - name: Add web host
+      lineinfile:
+        path: /etc/hosts
+        line: '192.168.99.100 web.do2.lab web'
+    - name: Add db host
+      lineinfile:
+        path: /etc/hosts
+        line: '192.168.99.101 db.do2.lab db'
+    - name: Install Apache web server and PHP
+      dnf:
+        name:
+          - httpd
+          - php
+          - php-mysqlnd
+        state: present
+    - name: Disable SELinux
+      selinux:
+        state: disabled 
+    - name: Copy site files
+      copy: 
+        src: site/ 
+        dest: /var/www/html/
+    - name: Open HTTP port in the firewall
+      firewalld:
+        service: http
+        permanent: true
+        state: enabled
+        immediate: true
+    - name: Start Apache web server
+      service:
+        name: httpd
+        state: started
+        enabled: yes
