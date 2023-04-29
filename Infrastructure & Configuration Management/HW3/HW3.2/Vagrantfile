@@ -5,12 +5,12 @@ Vagrant.configure("2") do |config|
   config.ssh.insert_key = false
 
   # Salt Client #2 - Debian 11
-  config.vm.define "web" do |web|
-    web.vm.box = "shekeriev/debian-11"
-    web.vm.hostname = "web"
+  config.vm.define "web" do |web|       
+    web.vm.box = "shekeriev/centos-stream-9"
+    web.vm.hostname = "web.do2.lab"
     web.vm.network "private_network", ip: "192.168.99.102"
+    web.vm.network "forwarded_port", guest: 80, host: 8080
     web.vm.provision "shell", path: "add_hosts.sh"
-	  web.vm.provision "shell", path: "add_packages_debian.sh"
 	  web.vm.provision "shell", path: "task-minion.sh"
     web.vm.provider "virtualbox" do |v|
       v.gui = false
@@ -21,11 +21,10 @@ Vagrant.configure("2") do |config|
   
   # Salt Client #3 - CentOS 9.x
   config.vm.define "db" do |db|
-    db.vm.box = "shekeriev/centos-stream-9"
-    db.vm.hostname = "db"
+    db.vm.box = "shekeriev/debian-11"
+    db.vm.hostname = "db.do2.lab"
     db.vm.network "private_network", ip: "192.168.99.103"
     db.vm.provision "shell", path: "add_hosts.sh"
-	  db.vm.provision "shell", path: "add_packages_centos.sh"
 	  db.vm.provision "shell", path: "task-minion.sh"
     db.vm.synced_folder "files/", "/vagrant"
     db.vm.provider "virtualbox" do |v|
@@ -41,7 +40,6 @@ Vagrant.configure("2") do |config|
       server.vm.hostname = "server"
       server.vm.network "private_network", ip: "192.168.99.100"
       server.vm.provision "shell", path: "add_hosts.sh"
-      server.vm.provision "shell", path: "add_packages_centos.sh"
       server.vm.provision "shell", path: "salt-master.sh"    
       #server.vm.provision "shell", path: "task-docker.sh"
       server.vm.synced_folder "./files/", "/vagrant"
