@@ -20,6 +20,7 @@ usermod -aG docker vagrant
 echo "* Download Jenkins CLI"
 wget http://192.168.111.100:8080/jnlpJars/jenkins-cli.jar
 
+
 echo "* Add Jenkins and adjust the group membership"
 sudo useradd jenkins
 
@@ -27,15 +28,7 @@ echo -e 'jenkinss\njenkinss' | sudo passwd jenkins
 sudo usermod -s /bin/bash jenkins
 echo "jenkins  ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/jenkins
 
-echo "* Copying daemon.json to /etc/docker/"
-sudo cp /vagrant/daemon.json /etc/docker/daemon.json
-
-echo "* Restarting docker to detect changes in daemon.json"
-sudo systemctl daemon-reload
-sudo systemctl restart docker
-
 echo "* Adjust the firewall"
 firewall-cmd --permanent --add-port=8080/tcp
 firewall-cmd --permanent --add-port=9100/tcp
-firewall-cmd --permanent --add-port=9323/tcp
 firewall-cmd --reload

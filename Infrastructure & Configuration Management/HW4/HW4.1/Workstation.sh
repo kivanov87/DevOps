@@ -37,7 +37,7 @@ echo -e "${GREEN}Docker cookbook downloaded.${NC}"
 mkdir cookbooks && cd cookbooks 
 chef generate cookbook docker --chef-license=accept 
 sudo cp -R /vagrant/files/default.rb  /home/vagrant/cookbooks/docker/recipes/ 
-sudo cp -R /vagrant/files/solo*  /home/vagrant/cookbooks/
+sudo cp -R /vagrant/files/solo*  /home/vagrant/cookbooks/docker
 sudo cp -R /vagrant/files/metadata.rb  /home/vagrant/cookbooks/docker/metadata.rb
 
 
