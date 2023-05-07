@@ -9,4 +9,3 @@ sudo systemctl start chronyd
 sudo setenforce permissive
 
 sudo sed -i 's\=enforcing\=permissive\g' /etc/sysconfig/selinux
-

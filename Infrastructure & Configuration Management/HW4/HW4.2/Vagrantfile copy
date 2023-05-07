@@ -1,0 +1,52 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.ssh.insert_key = false
+
+  # Salt Client #2 - Debian 11
+  config.vm.define "web" do |web|       
+    web.vm.box = "shekeriev/centos-stream-9"
+    web.vm.hostname = "web.do2.lab"
+    web.vm.network "private_network", ip: "192.168.99.102"
+    web.vm.network "forwarded_port", guest: 80, host: 8080
+    web.vm.provision "shell", path: "add_hosts.sh"
+	  web.vm.provision "shell", path: "centos-pre.sh"
+    web.vm.provider "virtualbox" do |v|
+      v.gui = false
+      v.memory = 1024
+      v.cpus = 2
+    end
+  end
+  
+  # Salt Client #3 - CentOS 9.x
+  config.vm.define "db" do |db|
+    db.vm.box = "shekeriev/debian-11"
+    db.vm.hostname = "db.do2.lab"
+    db.vm.network "private_network", ip: "192.168.99.103"
+    db.vm.provision "shell", path: "add_hosts.sh"
+	  db.vm.provision "shell", path: "task-minion.sh"
+    db.vm.synced_folder "files/", "/vagrant"
+    db.vm.provider "virtualbox" do |v|
+      v.gui = false
+      v.memory = 1024
+      v.cpus = 2
+    end
+  end
+
+  # Salt chef-server - CentOS 9.x
+  config.vm.define "chef-server" do |server|
+    chef-server.vm.box = "shekeriev/centos-stream-9"
+    chef-server.vm.hostname = "chef-server"
+    chef-server.vm.network "private_network", ip: "192.168.99.100"
+    chef-server.vm.provision "shell", path: "add_hosts.sh"
+    chef-server.vm.provision "shell", path: "centos-pre.sh"    
+    #chef-server.vm.provision "shell", path: "task-docker.sh"
+    chef-server.vm.synced_folder "./files/", "/vagrant"
+    chef-server.vm.provider "virtualbox" do |v|
+      v.gui = false
+      v.memory = 2048
+      v.cpus = 2
+    end
+  end
+end
