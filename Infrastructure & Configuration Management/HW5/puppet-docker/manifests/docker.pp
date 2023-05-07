@@ -2,6 +2,12 @@ $packages = [ 'docker-ce', 'docker-ce-cli', 'containerd.io' ]
 
 package { $packages: }
 
+service { 'docker':
+  ensure     => running,
+  enable     => true,
+  subscribe  => File['/etc/sysconfig/docker'],
+}
+
 docker::run { 'nginx':
   image   => 'nginx',
   ports   => ['80:80'],
@@ -13,11 +19,6 @@ file { '/etc/nginx/conf.d/nginx.conf':
   notify  => Service['docker'],
 }
 
-service { 'docker':
-  ensure     => running,
-  enable     => true,
-  subscribe  => File['/etc/sysconfig/docker'],
-}
 class { 'firewall': }
 
 firewall { '000 accept 80/tcp':
