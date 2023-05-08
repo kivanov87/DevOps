@@ -1,10 +1,15 @@
-class { 'docker':
-  package_source_location => 'https://yum.dockerproject.org/repo/main/centos/7',
-  package_release         => '17.05.0.ce-1.el7.centos',
-}
+class { 'docker': }
 
 docker::run { 'nginx':
-  image   => 'nginx',
-  ports   => ['80:80'],
-  require => Class['docker'],
+  image            => 'nginx:latest',
+  detach           => false,
+  ports            => ['80:80'],
+}
+
+class { 'firewall': }
+
+firewall { '000 accept 80/tcp':
+  action   => 'accept',
+  dport    => 80,
+  proto    => 'tcp',
 }

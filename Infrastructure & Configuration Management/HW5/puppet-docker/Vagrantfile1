@@ -43,20 +43,20 @@ Vagrant.configure("2") do |config|
   end
 
   # DB - Ubuntu 20.04
-  config.vm.define "client2" do |client2|
-    client2.vm.box = "shekeriev/debian-11"
-    client2.vm.hostname = "db"
-    client2.vm.network "private_network", ip: "192.168.99.102"
-    client2.vm.provision "shell", path: "add_hosts.sh"
-    client2.vm.provision "shell", inline: $modulesdb, privileged: false
+  config.vm.define "db" do |db|
+    db.vm.box = "shekeriev/debian-11"
+    db.vm.hostname = "db"
+    db.vm.network "private_network", ip: "192.168.99.102"
+    db.vm.provision "shell", path: "add_hosts.sh"
+    db.vm.provision "shell", inline: $modulesdb, privileged: false
 
-    client2.vm.provision "puppet" do |puppet|
+    db.vm.provision "puppet" do |puppet|
       puppet.manifests_path = "manifests"
       puppet.manifest_file = "db.pp"
       puppet.options = "--verbose --debug"
     end
 
-    client2.vm.provider "virtualbox" do |v|
+    db.vm.provider "virtualbox" do |v|
       v.gui = false
       v.memory = 512
       v.cpus = 2

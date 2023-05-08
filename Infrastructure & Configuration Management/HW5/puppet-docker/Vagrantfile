@@ -10,8 +10,11 @@ Vagrant.configure("2") do |config|
 PUPPET
 
   $modulesdocker = <<MODULEDOCKER
+    sudo dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    sudo dnf install -y docker-ce docker-ce-cli containerd.io
+    sudo systemctl enable --now docker
+    sudo usermod -aG docker vagrant
     puppet module install puppetlabs-firewall
-    puppet module install puppetlabs-docker
     puppet module install puppetlabs-docker
     sudo rsync -a ~/.puppetlabs/etc/code/modules/ /etc/puppetlabs/code/
 
@@ -25,7 +28,7 @@ MODULEDOCKER
     docker.vm.provision "shell", path: "add_hosts.sh"
     docker.vm.provision "shell", inline: $puppet, privileged: false
     docker.vm.provision "shell", inline: $modulesdocker, privileged: false
-   #docker.vm.provision "shell", path: "copy-manifest.sh"
+    docker.vm.provision "shell", path: "copy-manifest.sh"
     docker.vm.provision "puppet" do |puppet|
       puppet.manifests_path = "manifests"
       puppet.manifest_file = "docker.pp"
@@ -33,7 +36,7 @@ MODULEDOCKER
     end
     docker.vm.provider "virtualbox" do |v|
       v.gui = false
-      v.memory = 512
+      v.memory = 2048
       v.cpus = 2
     end
   end
