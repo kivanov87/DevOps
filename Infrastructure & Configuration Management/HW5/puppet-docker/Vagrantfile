@@ -13,6 +13,8 @@ PUPPET
     puppet module install puppetlabs-firewall
     puppet module install puppetlabs-docker
     puppet module install puppetlabs-docker
+    sudo rsync -a ~/.puppetlabs/etc/code/modules/ /etc/puppetlabs/code/
+
 MODULEDOCKER
 
   # WEB - CentOS Stream 8
@@ -23,7 +25,7 @@ MODULEDOCKER
     docker.vm.provision "shell", path: "add_hosts.sh"
     docker.vm.provision "shell", inline: $puppet, privileged: false
     docker.vm.provision "shell", inline: $modulesdocker, privileged: false
-    docker.vm.provision "shell", path: "copy-manifest.sh"
+   #docker.vm.provision "shell", path: "copy-manifest.sh"
     docker.vm.provision "puppet" do |puppet|
       puppet.manifests_path = "manifests"
       puppet.manifest_file = "docker.pp"
