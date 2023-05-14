@@ -43,6 +43,7 @@ EOF
 sudo systemctl daemon-reload
 sudo systemctl start prometheus
 sudo systemctl enable prometheus
+sudo systemctl disable --now firewalld
 
 # Install Grafana
 sudo yum install -y https://dl.grafana.com/oss/release/grafana-8.3.2-1.x86_64.rpm
@@ -50,7 +51,7 @@ sudo yum install -y https://dl.grafana.com/oss/release/grafana-8.3.2-1.x86_64.rp
 # Configure Grafana
 sudo systemctl start grafana-server
 sudo systemctl enable grafana-server
-
+sudo cp
 # Set up Grafana data source
 sleep 10 # wait for Grafana to start
 curl -XPOST -H "Content-Type: application/json" -d '{"name":"Kafka","type":"prometheus","url":"http://localhost:9090","access":"proxy","isDefault":true}' http://admin:admin@localhost:3000/api/datasources

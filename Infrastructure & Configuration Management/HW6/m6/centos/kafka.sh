@@ -11,13 +11,16 @@ tar xzvf kafka_2.13-3.3.1.tgz
 rm kafka_2.13-3.3.1.tgz
 mv kafka_2.13-3.3.1 kafka
 
+# clear localhosts address
+sudo sed -i '/^127\.0\.0\.1/d;/^::1/d' /etc/hosts
+
 # Start Kafka
 cd kafka
 nohup bin/zookeeper-server-start.sh config/zookeeper.properties > /dev/null 2>&1 &
 nohup bin/kafka-server-start.sh config/server.properties > /dev/null 2>&1 &
 
 # Adjust producer to send custom messages to topic
-echo "Hello, World!" | bin/kafka-console-producer.sh --broker-list localhost:9092 --topic my-topic
+#
 
 # Adjust consumer to subscribe to topic
-bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic my-topic --from-beginning
+#bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic my-topic --from-beginning
