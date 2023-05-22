@@ -30,7 +30,7 @@ mv kafka_2.13-3.3.1 kafka && cd kafka
 bin/zookeeper-server-start.sh config/zookeeper.properties &> /tmp/kafka-zookeper.log &
 bin/kafka-server-start.sh config/server.properties &> /tmp/kafka-server.log &
 
-echo "* Creating Kafka Topic"
+echo "* Creating Kafka Topic"ca
 bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 3 --topic homework
 
 echo "* Starting Python Producer and Consumer"

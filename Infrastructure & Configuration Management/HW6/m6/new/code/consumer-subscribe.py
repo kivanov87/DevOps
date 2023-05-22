@@ -3,7 +3,7 @@ from kafka import KafkaConsumer
 print('Consumer started. Press Ctrl+C to stop.')
 
 try:
-    consumer = KafkaConsumer(bootstrap_servers=['kafka:9092'])
+    consumer = KafkaConsumer(bootstrap_servers=['192.168.99.101:9092'])
     consumer.subscribe(['homework'])
     for message in consumer:
         print(message)

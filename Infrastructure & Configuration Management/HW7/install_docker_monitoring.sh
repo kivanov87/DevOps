@@ -1,0 +1,35 @@
+#!/bin/bash
+
+echo "* Add the Docker repository"
+dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+echo "* Install the packages (Docker)"
+dnf install -y docker-ce docker-ce-cli containerd.io
+
+echo "* Start the Docker service"
+systemctl enable --now docker
+
+echo "* Add Jenkins and adjust the group membership"
+sudo usermod -aG docker vagrant
+
+echo "* Copying prometheus.yml to /tmp/"
+sudo cp /vagrant/prom/prometheus.yml /tmp/prometheus.yml
+
+echo "* Starting Prometheus"
+cd /vagrant/prom
+docker compose up -d
+
+docker run -d --rm --name rabbitmq-1 rabbitmq:3.11-management
+
+echo "* Adjust the firewall"
+firewall-cmd --permanent --add-port=3000/tcp
+firewall-cmd --permanent --add-port=4369/tcp
+firewall-cmd --permanent --add-port=5671/tcp
+firewall-cmd --permanent --add-port=5672/tcp
+firewall-cmd --permanent --add-port=9090/tcp
+firewall-cmd --permanent --add-port=15671/tcp
+firewall-cmd --permanent --add-port=15672/tcp
+firewall-cmd --permanent --add-port=15691/tcp
+firewall-cmd --permanent --add-port=15692/tcp
+firewall-cmd --permanent --add-port=25672/tcp
+firewall-cmd --reload

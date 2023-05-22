@@ -7,7 +7,7 @@ idx = 1
 print('Producer started. Press Ctrl+C to stop. Working on topic=' + str(tpk))
 
 try:
-	producer = KafkaProducer(bootstrap_servers=['kafka:9092'])
+	producer = KafkaProducer(bootstrap_servers=['192.168.99.101:9092'])
 	while True:
 		if str(idx)[-1] == "1":
 			st = 'This is the ' + str(idx) + 'st message!'
