@@ -1,0 +1,26 @@
+---
+- hosts: all
+  roles:
+    - geerlingguy.docker
+
+  tasks:
+    - name: Add vagrant user to docker
+      user:
+        name: "vagrant"
+        groups: docker
+        append: yes
+
+- name: Install Terraform
+  hosts: all
+  connection: local
+  become: true
+
+  tasks:
+    - name: Download Terraform binary
+      command: "curl -LO https://releases.hashicorp.com/terraform/1.4.6/terraform_1.4.6_linux_amd64.zip"
+
+    - name: Unzip Terraform package
+      command: "unzip terraform_1.4.6_linux_amd64.zip"
+
+    - name: Move Terraform binary to /usr/local/bin
+      command: "sudo mv terraform /usr/local/bin"

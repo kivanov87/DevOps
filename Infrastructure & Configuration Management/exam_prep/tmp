@@ -1,0 +1,21 @@
+    - name: Install Terraform
+      shell: curl -LO https://releases.hashicorp.com/terraform/1.4.6/terraform_1.4.6_linux_amd64.zip && \
+             unzip terraform_1.4.6_linux_amd64.zip && \
+             sudo mv terraform /usr/local/bin/
+      args:
+        creates: /usr/local/bin/terraform
+
+
+
+resource "docker_container" "zoo" {
+  name  = "zookeeper"
+  image = docker_image.img-zoo.image.id
+  env   = ["ALLOW_ANONYMOUS_LOGIN=YES"]
+  ports {
+    internal = 2181
+    external = 2181
+  }       
+  networks_advanced {
+    name = "kafka"
+  }
+}
