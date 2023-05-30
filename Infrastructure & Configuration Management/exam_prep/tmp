@@ -19,3 +19,8 @@ resource "docker_container" "zoo" {
     name = "kafka"
   }
 }
+
+sudo cp -R /vagrant/apache/* /home/vagrant/docker/
+sudo cp -R /vagrant/exporter/* /home/vagrant/docker/
+sudo cp -R /vagrant/monitoring/* /home/vagrant/docker/
+sudo cp -R /vagrant/code/* /home/vagrant/docker/
