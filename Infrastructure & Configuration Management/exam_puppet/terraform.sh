@@ -1,9 +1,7 @@
 #!/bin/bash
 
-echo "* Copy contaaner folders ..."
-cp -R /vagrant/containers/* /home/vagrant/
-
-sudo chown -R vagrant:vagrant /home/vagrant
+echo "* Copy terraform folders ..."
+cp -Rp /vagrant/terraform/* /home/vagrant/
 
 echo "* Terraform init kafka ..."
 cd /home/vagrant/apache
@@ -23,11 +21,11 @@ echo "yes" | terraform apply
 
 sleep 10s
 
-echo "* Terraform init code ..."
+echo "* Terraform init app ..."
 cd /home/vagrant/code
 terraform init
 
-echo "* Terraform apply code ..."
+echo "* Terraform apply app ..."
 echo "yes" | terraform apply
 
 sleep 10s

@@ -1,0 +1,115 @@
+---
+- name: Install required packages
+  hosts: all
+  become: true
+  tasks:
+    - name: Install packages
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - httpd
+        - php
+        - php-mysqlnd
+        - git
+
+    - name: Clone repository
+      git:
+        repo: 'https://github.com/shekeriev/do2-app-pack.git'
+        dest: '/code'
+        version: main
+
+- name: Configure /etc/hosts file
+  hosts: all
+  become: true
+  tasks:
+    - name: Add entry for web.do2.lab in /etc/hosts
+      lineinfile:
+        path: '/etc/hosts'
+        line: '192.168.99.101  web.do2.lab  web'
+        regexp: '^192.168.99.101'
+
+    - name: Add entry for db.do2.lab in /etc/hosts
+      lineinfile:
+        path: '/etc/hosts'
+        line: '192.168.99.102  db.do2.lab  db'
+        regexp: '^192.168.99.102'
+
+- name: Configure Apache and virtual hosts
+  hosts: all
+  become: true
+  tasks:
+    - name: Create vhost-app1.conf
+      copy:
+        dest: '/etc/httpd/conf.d/vhost-app1.conf'
+        content: |
+          Listen 8081
+          <VirtualHost *:8081>
+              DocumentRoot "/var/www/app1"
+          </VirtualHost>
+
+    - name: Create vhost-app2.conf
+      copy:
+        dest: '/etc/httpd/conf.d/vhost-app2.conf'
+        content: |
+          Listen 8082
+          <VirtualHost *:8082>
+              DocumentRoot "/var/www/app2"
+          </VirtualHost>
+
+    - name: Create /var/www/app1 directory
+      file:
+        path: '/var/www/app1'
+        state: directory
+        recurse: true
+
+    - name: Copy app1 files
+      copy:
+        src: '/code/app1/web'
+        dest: '/var/www/app1'
+        remote_src: true
+
+    - name: Create /var/www/app2 directory
+      file:
+        path: '/var/www/app2'
+        state: directory
+        recurse: true
+
+    - name: Copy app2 files
+      copy:
+        src: '/code/app2/web'
+        dest: '/var/www/app2'
+        remote_src: true
+
+- name: Configure firewall
+  hosts: all
+  become: true
+  tasks:
+  - name: Open ports 8081/tcp and 8082/tcp
+    ansible.posix.firewalld:
+      port: "{{ item }}"
+      permanent: true
+      state: enabled
+      immediate: true
+    with_items:
+      - 8081/tcp
+      - 8082/tcp
+
+- name: Configure SELinux
+  hosts: all
+  become: true
+  tasks:
+    - name: Set SELinux mode to permissive
+      selinux:
+        policy: targeted
+        state: permissive
+
+- name: Start and enable httpd service
+  hosts: all
+  become: true
+  tasks:
+    - name: Start httpd service
+      service:
+        name: httpd
+        state: started
+        enabled: true

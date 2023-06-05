@@ -1,0 +1,134 @@
+---
+- name: Install Git and clone repository
+  hosts: all
+  become: true
+  tasks:
+    - name: Install Git
+      package:
+        name: git
+        state: present
+
+    - name: Clone repository
+      git:
+        repo: 'https://github.com/shekeriev/do2-app-pack.git'
+        dest: '/code'
+
+- name: Install and configure MySQL
+  hosts: all
+  become: true
+  tasks:
+    - name: Install MySQL server
+      package:
+        name: mysql-server
+        state: present
+
+    - name: Set root password and remove default accounts
+      mysql_user:
+        name: root
+        password: '12345'
+        login_user: root
+        login_password: '12345'
+        host: localhost
+        state: present
+
+    - name: Configure MySQL bind address
+      lineinfile:
+        dest: '/etc/my.cnf'
+        regexp: '^bind-address'
+        line: 'bind-address = 0.0.0.0'
+
+    - name: Restart MySQL service
+      service:
+        name: mysqld
+        state: restarted
+
+- name: Configure MySQL databases
+  hosts: all
+  become: true
+  tasks:
+    - name: Create database and user for db1
+      mysql_db:
+        name: db1
+        state: present
+        login_user: root
+        login_password: '12345'
+
+    - name: Grant privileges for db1 user
+      mysql_user:
+        name: root
+        password: '12345'
+        login_user: root
+        login_password: '12345'
+        host: '%'
+        priv: '*.*:ALL'
+        state: present
+
+    - name: Run db_setup.sql for db1
+      mysql_db:
+        name: db1
+        login_user: root
+        login_password: '12345'
+        state: import
+        target: '/code/app1/db/db_setup.sql'
+
+    - name: Create database and user for db12
+      mysql_db:
+        name: db12
+        state: present
+        login_user: root
+        login_password: '12345'
+
+    - name: Grant privileges for db12 user
+      mysql_user:
+        name: root
+        password: '12345'
+        login_user: root
+        login_password: '12345'
+        host: '%'
+        priv: '*.*:ALL'
+        state: present
+
+    - name: Run db_setup.sql for db12
+      mysql_db:
+        name: db12
+        login_user: root
+        login_password: '12345'
+        state: import
+        target: '/code/app2/db/db_setup.sql'
+
+- name: Update /etc/hosts file
+  hosts: all
+  become: true
+  tasks:
+    - name: Add entry for web.do2.lab in /etc/hosts
+      lineinfile:
+        path: '/etc/hosts'
+        line: '192.168.99.101  web.do2.lab  web'
+        regexp: '^192.168.99.101'
+
+    - name: Add entry for db.do2.lab in /etc/hosts
+      lineinfile:
+        path: '/etc/hosts'
+        line: '192.168.99.102  db.do2.lab  db'
+        regexp: '^192.168.99.102'
+
+- name: Configure firewall
+  hosts: all
+  become: true
+  tasks:
+    - name: Allow incoming traffic on port 3306
+      firewalld:
+        port: 3306
+        permanent: true
+        immediate: true
+        state: enabled
+
+- name: Configure SELinux
+  hosts: all
+  become: true
+  tasks:
+    - name: Set SELinux boolean for MySQL
+      selinux:
+        boolean: mysqld_db_connect
+        state: yes
+        persistent: yes

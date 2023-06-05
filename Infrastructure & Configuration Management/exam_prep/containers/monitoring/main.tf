@@ -27,7 +27,7 @@ resource "docker_container" "prometheus" {
     name = "exam-prep"
   }
   volumes {
-    host_path      = "/vagrant/monitoring/prometheus.yml"
+    host_path      = "/home/vagrant/monitoring/prometheus.yml"
     container_path = "/etc/prometheus/prometheus.yml"
     read_only      = true
   }
@@ -46,7 +46,7 @@ resource "docker_container" "grafana" {
     name = "exam-prep"
   }
   volumes {
-    host_path      = "/vagrant/monitoring/datasource.yml"
+    host_path      = "/home/vagrant/monitoring/datasource.yml"
     container_path = "/etc/grafana/provisioning/datasources/datasource.yml"
     read_only      = true
   }
