@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "* Login to Docker Hub ..."
-cat /vagrant/support/docker-hub-cred.txt | docker login --username ivanovka87 --password-Aecfl9e3wq
+cat /vagrant/support/docker-hub-cred.txt | docker login --username ivanovka87 --password-
 
 echo "* Clone the repository ..."
 cd /vagrant/application && git clone https://github.com/shekeriev/bgapp
