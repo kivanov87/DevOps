@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Change these two (remove the <> as well)
+
 CRED_NAME=ivanovka87
-CRED_PASS=dckr_pat_CDeK-5VthNkn2GQZaFJB3okPw6g
+CRED_PASS=
 
 echo "* Stop Jenkins"
 systemctl stop jenkins
