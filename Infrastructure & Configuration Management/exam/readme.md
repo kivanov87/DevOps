@@ -1,11 +1,10 @@
-#########Docker station #################### 
-ансибъл инсталира докер и тераформ
-forwarding.sh отваря портовете за контейнерите
+#########Docker station#################### 
+Ansible will install docker and terraform 
+forwarding.sh will open ports for the containers
 
-Команди:
-стартираме всяка част от тераформ компонентите
+Manual Commands
 vagrant up docker 
-cp -R /vagrant/containers/* /home/vagrant/ копират се терраформ файловете.
+cp -R /vagrant/containers/* /home/vagrant/ 
 
 cd/home/vagrant/apache
 terraform init
@@ -24,32 +23,25 @@ docker logs kafka-consumer
 
 docker logs kafka-producer
 
-логваме в графана http://192.168.99.100:3000/
+Login into Grafana http://192.168.99.100:3000/
 
-проверяваме source-a
-
-и настройваме табло със метрика от producer-а
+Checking source, and setup dashboard with metroc for the producer.
 
 Discovered_facts_created"
 
-
-
-#############машина WEB#############
+#############WEB HOST#############
 vagrant up web 
-пъпет инсталира и стартира web часта от приложение 2 и 4 от https://github.com/shekeriev/do2-app-pack
+Puppet will install and start app 2 and 4 from the repo https://github.com/shekeriev/do2-app-pack
 
 ръчна команда необходима за тази машина 
 
 sudo systemctl stop firewalld
 
-не успях да я спра с манифеста
-
-#############машина DB#############
+#############DB HOST#############
 vagrant up db
 
-пъпет инсталира и стартира базите от двете приложения 2 и 4
+Puppet will install and start databases for the apps  2 and 4 
 
-няма ръчни команди
 
 
  
