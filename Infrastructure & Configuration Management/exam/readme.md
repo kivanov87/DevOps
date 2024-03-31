@@ -42,6 +42,7 @@ vagrant up db
 
 Puppet will install and start databases for the apps  2 and 4 
 
+sudo systemctl stop firewalld
 
 
  
