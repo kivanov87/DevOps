@@ -32,9 +32,7 @@ Discovered_facts_created"
 #############WEB HOST#############
 vagrant up web 
 Puppet will install and start app 2 and 4 from the repo https://github.com/shekeriev/do2-app-pack
-
-ръчна команда необходима за тази машина 
-
+d
 sudo systemctl stop firewalld
 
 #############DB HOST#############
